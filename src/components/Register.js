@@ -8,9 +8,17 @@ import Footer from "./Footer";
 import Header from "./Header";
 import "./Register.css";
 
+
 const Register = () => {
   const { enqueueSnackbar } = useSnackbar();
+  const [username,setUsername]=useState('')
+  const [password,setPassword]=useState('')
+  const [cnfPassword,setCnfPassword]=useState('')
+  const [displayLoadBtn,setDisplayLoadBtn]=useState(false)
+  // const formData={uname:username,pwd:password,cnfPwd:cnfPassword}
 
+
+  
 
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement the register function
   /**
@@ -36,6 +44,31 @@ const Register = () => {
    * }
    */
   const register = async (formData) => {
+    setDisplayLoadBtn(true)
+    console.log(JSON.stringify(formData))
+    // <workspace-ip>:8082/api/v1/auth/register;
+    // console.log(`${config.endpoint}/register`);
+    let mess;
+    let stat;
+    try{
+      const res=await axios.post(`${config.endpoint}/auth/register`,formData)
+      if(res.status===201){
+        mess="Registered successfully"
+        stat="success"
+      }
+    }catch(e){
+      if(e.response.status===400){
+      mess=e.response.data.message;
+      }else{
+        mess="Something went wrong. Check that the backend is running, reachable and returns valid JSON."
+      }
+      stat='error'
+    }
+    enqueueSnackbar(mess,{variant:stat})
+    
+    setDisplayLoadBtn(false)
+    
+    // const data=res.data();
   };
 
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement user input validation logic
@@ -56,7 +89,33 @@ const Register = () => {
    * -    Check that password field is not less than 6 characters in length - "Password must be at least 6 characters"
    * -    Check that confirmPassword field has the same value as password field - Passwords do not match
    */
-  const validateInput = (data) => {
+
+
+    /**
+      * @param {{username:string,password:string,confirmPassword:string}} data
+      *  @return {boolean}
+    */
+    
+  const validateInput = async (data) => {
+    if(data.username.length===0){
+      enqueueSnackbar('Username is a required field',{variant:'warning'})
+    }
+    else if(data.username.length <6 ){
+      enqueueSnackbar("Username must be at least 6 characters",{variant:'warning'})
+    }
+    else if(data.password.length===0){
+      enqueueSnackbar("Password is a required field",{variant:'warning'})
+    }
+    else if(data.password.length<6){
+      enqueueSnackbar("Password must be at least 6 characters",{variant:'warning'})
+    }
+    else if(data.password!==cnfPassword){
+      enqueueSnackbar("Passwords do not match",{variant:'warning'})
+    }else{
+    register(data)
+    }
+
+
   };
 
   return (
@@ -78,6 +137,7 @@ const Register = () => {
             name="username"
             placeholder="Enter Username"
             fullWidth
+            onChange={(e)=>setUsername(e.target.value)}
           />
           <TextField
             id="password"
@@ -88,6 +148,7 @@ const Register = () => {
             helperText="Password must be atleast 6 characters length"
             fullWidth
             placeholder="Enter a password with minimum 6 characters"
+            onChange={(e)=>setPassword(e.target.value)}
           />
           <TextField
             id="confirmPassword"
@@ -96,10 +157,24 @@ const Register = () => {
             name="confirmPassword"
             type="password"
             fullWidth
+            onChange={(e)=>setCnfPassword(e.target.value)}
           />
-           <Button className="button" variant="contained">
-            Register Now
-           </Button>
+            <div>
+              {displayLoadBtn
+              &&
+              <div className="loader">
+                <CircularProgress color='success'/>
+              </div>
+              }
+              {
+              !(displayLoadBtn) 
+              &&
+              <Button className="button" variant="contained" onClick={()=>validateInput({username,password})}>
+                Register Now
+              </Button>
+              }
+            </div>
+          
           <p className="secondary-action">
             Already have an account?{" "}
              <a className="link" href="#">
