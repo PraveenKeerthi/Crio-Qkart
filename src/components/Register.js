@@ -3,9 +3,11 @@ import { Box } from "@mui/system";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { config } from "../App";
 import Footer from "./Footer";
 import Header from "./Header";
+import { useHistory } from "react-router-dom";
 import "./Register.css";
 
 
@@ -15,6 +17,7 @@ const Register = () => {
   const [password,setPassword]=useState('')
   const [cnfPassword,setCnfPassword]=useState('')
   const [displayLoadBtn,setDisplayLoadBtn]=useState(false)
+  let history=useHistory();
   // const formData={uname:username,pwd:password,cnfPwd:cnfPassword}
 
 
@@ -44,8 +47,8 @@ const Register = () => {
    * }
    */
   const register = async (formData) => {
+    
     setDisplayLoadBtn(true)
-    console.log(JSON.stringify(formData))
     // <workspace-ip>:8082/api/v1/auth/register;
     // console.log(`${config.endpoint}/register`);
     let mess;
@@ -55,6 +58,7 @@ const Register = () => {
       if(res.status===201){
         mess="Registered successfully"
         stat="success"
+        history.push("/login")
       }
     }catch(e){
       if(e.response.status===400){
@@ -66,6 +70,7 @@ const Register = () => {
     }
     enqueueSnackbar(mess,{variant:stat})
     
+    if(mess==="Regi")
     setDisplayLoadBtn(false)
     
     // const data=res.data();
@@ -177,9 +182,9 @@ const Register = () => {
           
           <p className="secondary-action">
             Already have an account?{" "}
-             <a className="link" href="#">
+             <Link className="link" to="/login">
               Login here
-             </a>
+             </Link>
           </p>
         </Stack>
       </Box>
