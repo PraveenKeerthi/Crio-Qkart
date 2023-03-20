@@ -6,23 +6,24 @@ import "./Header.css";
 import {Link} from "react-router-dom"
 import { Typography } from "@mui/material";
 
-const Header = ({ children, hasHiddenAuthButtons }) => {
+const Header = ({ children, hasHiddenAuthButtons,data }) => {
     function logOutFn(){
       localStorage.clear()
       window.location.reload();
     }
-    let logOut=((children==null)?false:true)
+    let logOut=((data==null)?false:true)
     return (
       <Box className="header">
         <Box className="header-title">
             <img src="logo_light.svg" alt="QKart-icon"></img>
         </Box>
+        {children}
           <div>
           {
             logOut && 
             <Stack direction="row" alignItems="center" spacing={2}>
-              <Avatar src="avatar.png" alt={children}></Avatar>
-              <Typography className="username-text">{children}</Typography>
+              <Avatar src="avatar.png" alt={data}></Avatar>
+              <Typography className="username-text">{data}</Typography>
               <Button variant="text" onClick={logOutFn} className='button'>LOGOUT</Button>
               </Stack>
           }
