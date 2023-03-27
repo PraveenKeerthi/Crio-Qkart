@@ -16,16 +16,16 @@ const ProductCard = ({ product, handleAddToCart }) => {
     <Card className="card">
       <CardMedia image={product.image} component='img' />
       <CardContent>
-      <Typography variant="h5" mb={1}>
+      <Typography variant="h6" mb={1}>
        {product.name}
       </Typography>
-      <Typography variant="h5" mb={1} sx={{fontWeight: 'bold'}}>
+      <Typography variant="h6" mb={1} sx={{fontWeight: 'bold'}}>
         ${product.cost}
       </Typography>
       <Rating value={product.rating} readOnly></Rating>
       </CardContent>
       <CardActions className='card-actions'>
-        <Button className='card-button' variant='contained' size="medium" fullWidth> <AddShoppingCartOutlined/> ADD TO CART</Button>
+        <Button className='card-button' variant='contained' size="medium" fullWidth onClick={(e)=>handleAddToCart()}> <AddShoppingCartOutlined style={{marginRight: "10px"}} /> ADD TO CART</Button>
       </CardActions>
       
     </Card>
