@@ -150,6 +150,7 @@ const Products = () => {
    *          "name": "iPhone XR",
    *          "category": "Phones",
    *          "cost": 100,
+   * 
    *          "rating": 4,
    *          "image": "https://i.imgur.com/lulqWzW.jpg",
    *          "_id": "v4sLtEcMpzabRyfx"
@@ -179,6 +180,7 @@ const Products = () => {
       const prom=await axios.get(`${config.endpoint}/products`)
       const data=prom.data;
       setProdData(data)
+     
       setConstProdArr(data);
       setLoadingData(false)
       setAddLoadedData(true)
