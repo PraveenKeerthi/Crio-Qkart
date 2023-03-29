@@ -117,18 +117,29 @@ const ItemQuantity = ({
   value,
   handleAdd,
   handleDelete,
+  isReadOnly
 }) => {
   return (
     <Stack direction="row" alignItems="center">
-      <IconButton size="small" color="primary" onClick={handleDelete}>
-        <RemoveOutlined />
-      </IconButton>
+      {
+        ! isReadOnly 
+        &&
+        <IconButton size="small" color="primary" onClick={handleDelete}>
+          <RemoveOutlined />
+        </IconButton>
+      }
+      
       <Box padding="0.5rem" data-testid="item-qty">
-        {value}
+        {!isReadOnly && value}
+        {isReadOnly && `Qty:${value}`}
       </Box>
-      <IconButton size="small" color="primary" onClick={handleAdd}>
-        <AddOutlined />
-      </IconButton>
+      {
+        ! isReadOnly
+        &&
+        <IconButton size="small" color="primary" onClick={handleAdd}>
+          <AddOutlined />
+        </IconButton>
+      }
     </Stack>
   );
 };
@@ -153,6 +164,7 @@ const Cart = ({
   products,
   items = [],
   handleQuantity,
+  isReadOnly
 }) => {
 
 
@@ -207,6 +219,7 @@ const Cart = ({
                         alignItems="center"
                     >
                     <ItemQuantity
+                      isReadOnly={isReadOnly}
                       value={item.qty}
                       handleAdd={()=>handleAdd(item)}
                       handleDelete={()=>handleDelete(item)}
@@ -240,7 +253,10 @@ const Cart = ({
           </Box>
         </Box>
 
-        <Box display="flex" justifyContent="flex-end" className="cart-footer">
+        {
+          !isReadOnly
+          &&
+          <Box display="flex" justifyContent="flex-end" className="cart-footer">
           <Button
             color="primary"
             variant="contained"
@@ -251,6 +267,7 @@ const Cart = ({
             Checkout
           </Button>
         </Box>
+        }
       </Box>
     </>
   );

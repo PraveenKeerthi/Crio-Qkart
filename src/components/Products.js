@@ -324,7 +324,7 @@ const Products = () => {
           loggedIn
           &&
           <Grid item md={3} className="bg-color-cart">
-              <Cart products={prodData} items={cartItem} handleQuantity={addToCart}></Cart>
+              <Cart products={prodData} items={cartItem} handleQuantity={addToCart} isReadOnly={false}></Cart>
           </Grid>
         }
       </Grid>

@@ -23,7 +23,7 @@ const Thanks = () => {
 
   return (
     <>
-      <Header />
+      <Header  data={localStorage.getItem("username")} />
       <Box className="greeting-container">
         <h2>Yay! It's ordered 😃</h2>
         <p>You will receive an invoice for your order shortly.</p>
